@@ -9,7 +9,7 @@ cat "$target_dir"/*/failed_login_data.txt | awk '{print $5}' | sort > "$temp_fil
 
 # join ips with country comparison, count country occurence, and wrap with country_dist footer and header
 # initially tried to direct output back to temp file, this link told why I couldn't, and suggested sponge: https://stackoverflow.com/questions/6696842/how-can-i-use-a-file-in-a-command-and-redirect-output-to-the-same-file-without-t
-# comment said to use with caution since sponge is destructive, I wouldn't use it if I wasn't using vc (git) and only running this through the bats tests
+# comment said to use with caution since sponge is destructive, I wouldn't use it while trying to figure out a working regex if I wasn't using vc (git) and only running this through the bats tests
 # could've just made another temp file but didn't want to
 join "$temp_file" etc/country_IP_map.txt | awk '{print $2}' | sort | uniq -c | awk 'match($0, / *([0-9]+) *([A-Z]{2})/, groups) {print "data.addRow([\x27" groups[2] "\x27, " groups[1] "]);"}' | sponge $temp_file
 
